@@ -7,7 +7,13 @@ import Form from 'react-bootstrap/Form';
 function DeveloperData () {
     const [ developers, dispatch ] = useReducer( developer, [] );
 
-    const addDeveloper = ( name, favProgLanguages, favTech, favFood, favDrink ) => {
+    const handleSubmit = ( event ) => {
+        event.preventDefault();
+        const name = event.target.name.value;
+        const favProgLanguages = event.target.favProgLanguages.value;
+        const favTech = event.target.favTech.value;
+        const favFood = event.target.favFood.value;
+        const favDrink = event.target.favDrink.value;
         dispatch( {
             type: 'ADD_Developer',
             payload: {
@@ -20,14 +26,12 @@ function DeveloperData () {
         } );
     };
 
-    const handleSubmit = ( event ) => {
-        event.preventDefault();
-        const name = event.target.name.value;
-        const favProgLanguages = event.target.favProgLanguages.value;
-        const favTech = event.target.favTech.value;
-        const favFood = event.target.favFood.value;
-        const favDrink = event.target.favDrink.value;
-        addDeveloper( name, favProgLanguages, favTech, favFood, favDrink );
+    const handleDelete = ( e, id ) => {
+        e.preventDefault();
+        dispatch( {
+            type: 'DELETE_Developer',
+            payload: id
+        } );
     };
     return (
         <>
@@ -79,9 +83,9 @@ function DeveloperData () {
             <section>
                 <h1>Developer Data</h1>
                 <Row xs={2} md={3} className="g-4">
-                    {developers.length ? developers.map( ( developer, index ) => (
-                        <Col key={index}>
-                            <Card style={{ width: '22rem', justifyContent: 'center', display: 'flex', margin: '10px auto' }}>
+                    {developers.length ? developers.map( ( developer ) => (
+                        <Col key={developer.id}>
+                            <Card style={{ width: '20rem', justifyContent: 'center', display: 'flex', margin: '10px auto' }}>
                                 <Card.Body>
                                     <Card.Title>
                                         {developer.name}
@@ -92,6 +96,7 @@ function DeveloperData () {
                                         Favorite Food: {developer.favFood}<br />
                                         Favorite Drink: {developer.favDrink}
                                     </Card.Text>
+                                    <Button variant="danger" onClick={(e) => handleDelete(e, developer.id)}>Delete Developer Data</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
