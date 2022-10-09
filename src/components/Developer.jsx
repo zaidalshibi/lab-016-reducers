@@ -1,5 +1,8 @@
+import {v4 as uuidv4} from 'uuid';
+
 export const actionType = {
-    ADD_Developer: 'ADD_Developer'
+    ADD_Developer: 'ADD_Developer',
+    DELETE_Developer: 'DELETE_Developer'
 };
 
 export const developer = ( state, action ) => {
@@ -10,8 +13,11 @@ export const developer = ( state, action ) => {
                 favProgLanguages: action.payload.favProgLanguages,
                 favTech: action.payload.favTech,
                 favFood: action.payload.favFood,
-                favDrink: action.payload.favDrink
+                favDrink: action.payload.favDrink,
+                id : uuidv4()
             } ];
+        case actionType.DELETE_Developer:
+            return state.filter( ( developer ) => developer.id !== action.payload );
         default:
             return state;
     }
